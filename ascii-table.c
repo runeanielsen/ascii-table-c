@@ -2,19 +2,19 @@
 #include <stdio.h>
 #include <string.h>
 
-char* pad_left(char* s, size_t l) {
+void pad_left(char* s, uint l) {
   char* padded = calloc(l, sizeof(char));
 
-  size_t iterations = l - strlen(s) - 1;
-  for (size_t i = 0; i < iterations; i++) {
+  uint iterations = l - strlen(s) - 1;
+  for (uint i = 0; i < iterations; i++) {
     padded[i] = ' ';
   }
 
   strcat(padded, s);
-  return padded;
+  strcpy(s, padded);
 }
 
-char get_char(size_t i) {
+char get_char(uint i) {
   if (i <= 31) {
     return '-';
   } else if (i == 32) {
@@ -27,56 +27,61 @@ char get_char(size_t i) {
   }
 }
 
-char* get_dec(size_t i) {
-  size_t l = 0;
-  char* s;
-
-  if (i < 10) {
-    l = 2;
-  } else if (i < 100) {
-    l = 3;
-  } else {
-    l = 4;
-  }
-
-  s = calloc(l, sizeof(char));
-  snprintf(s, l, "%zu", i);
-
+char* get_dec(uint i) {
+  char* s = calloc(4, sizeof(char));
+  snprintf(s, 4, "%d", i);
   return s;
 }
 
-char* create_ascii_row(size_t i) {
-  char* s = calloc(156, sizeof(char));
+char* get_hex(uint i) {
+  char* s = calloc(2, sizeof(char));
+  sprintf(s, "%x", i);
+  return s;
+}
 
-  for (size_t j = 0; j < 4; j++) {
-    size_t tmp_i = i + (32 * j);
+char* get_octal(uint i) {
+  char* s = calloc(3, sizeof(char));
+  sprintf(s, "%o", i);
+  return s;
+}
+
+char* create_ascii_row(uint i) {
+  char* s = calloc(73, sizeof(char));
+
+  for (uint j = 0; j < 4; j++) {
+    uint tmp_i = i + (32 * j);
     char c = get_char(tmp_i);
-    char* get_dec_result = get_dec(tmp_i);
-    char* dec = pad_left(get_dec_result, 4);
+    char* dec = get_dec(tmp_i);
+    pad_left(dec, 4);
+    char* hex = get_hex(tmp_i);
+    pad_left(hex, 4);
+    char* oct = get_octal(tmp_i);
+    pad_left(oct, 4);
 
-    char* tmp_s = calloc(10, sizeof(char));
+    char tmp_s[16];
     if (j == 3) {
-      sprintf(tmp_s, "%s  %s  %s  %c", dec, dec, dec, c);
+      sprintf(tmp_s, "%s  %s  %s  %c", dec, hex, oct, c);
     } else {
-      sprintf(tmp_s, "%s  %s  %s  %c | ", dec, dec, dec, c);
+      sprintf(tmp_s, "%s  %s  %s  %c | ", dec, hex, oct, c);
     }
 
     strcat(s, tmp_s);
 
     free(dec);
-    free(get_dec_result);
+    free(hex);
+    free(oct);
   }
 
   return s;
 }
 
 int main() {
-  for (size_t i = 0; i < 4; i++) {
+  for (uint i = 0; i < 4; i++) {
     printf("Dec  Hex  Oct  C   ");
   }
   printf("\n");
 
-  for (size_t i = 0; i <= 31; i++) {
+  for (uint i = 0; i <= 31; i++) {
     char* x = create_ascii_row(i);
     printf("%s\n", x);
     free(x);
