@@ -80,9 +80,9 @@ int main() {
   printf("\n");
 
   for (uint i = 0; i <= 31; i++) {
-    char* x = create_ascii_row(i);
-    printf("%s\n", x);
-    free(x);
+    char* row = create_ascii_row(i);
+    printf("%s\n", row);
+    free(row);
   }
 
   return EXIT_SUCCESS;
