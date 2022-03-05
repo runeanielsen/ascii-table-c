@@ -17,12 +17,9 @@ void pad_left(char* s, uint l) {
 char get_char(uint i) {
   if (i <= 31) {
     return '-';
-  } else if (i == 32) {
+  } else if (i == 32 || i == 127) {
     return ' ';
-  } else if(i == 127) {
-    return ' ';
-  }
-  else {
+  } else {
     return (char)i;
   }
 }
@@ -50,6 +47,7 @@ char* create_ascii_row(uint i) {
 
   for (uint j = 0; j < 4; j++) {
     uint tmp_i = i + (32 * j);
+
     char c = get_char(tmp_i);
     char* dec = get_dec(tmp_i);
     pad_left(dec, 4);
