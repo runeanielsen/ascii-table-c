@@ -5,7 +5,7 @@ Simple program to display an ASCII table, because why not?.
 ## Compile and run.
 
 ```sh
-gcc -Wall -o ascii-table ascii-table.c && ./ascii-table;
+gcc -Wall -o ascii-table ascii-table.c && ./ascii-table
 ```
 
 ## Output
