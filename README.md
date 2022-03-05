@@ -10,7 +10,7 @@ gcc -Wall -o ascii-table ascii-table.c && ./ascii-table;
 
 ## Output
 
-```sh
+```text
 Dec  Hex  Oct  C   Dec  Hex  Oct  C   Dec  Hex  Oct  C   Dec  Hex  Oct  C
   0    0    0  - |  32   20   40    |  64   40  100  @ |  96   60  140  `
   1    1    1  - |  33   21   41  ! |  65   41  101  A |  97   61  141  a
