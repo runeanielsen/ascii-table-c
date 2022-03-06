@@ -2,15 +2,28 @@
 #include <stdio.h>
 #include <string.h>
 
-void pad_left(char* s, uint l) {
-  uint padding_count = l - strlen(s) - 1;
-  char* padding = calloc(padding_count, sizeof(char));
+void pad_left(char* s, size_t l) {
+  /* If there is no difference, do not pad. */
+  if (l == strlen(s)) {
+    return;
+  }
+
+  size_t padding_count = l - strlen(s) - 1;
+
+  char padding[l];
+  padding[padding_count] = '\0';
   for (uint i = 0; i < padding_count; i++) {
     padding[i] = ' ';
   }
-  strcat(padding, s);
-  strcpy(s, padding);
-  free(padding);
+
+  s = realloc(s, l + 1);
+  if (!s) {
+    fprintf(stderr, "pad_left(): Out of memory.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  strncat(padding, s, l + 1);
+  strncpy(s, padding, l + 1);
 }
 
 char get_char(uint i) {
@@ -23,20 +36,23 @@ char get_char(uint i) {
   }
 }
 
-char* get_dec(uint i) {
-  char* s = calloc(4, sizeof(char));
-  snprintf(s, 4, "%d", i);
+char* get_dec(size_t i) {
+  size_t needed = snprintf(NULL, 0, "%zu", i);
+  char* s = malloc(needed + 1);
+  sprintf(s, "%zu", i);
   return s;
 }
 
 char* get_hex(uint i) {
-  char* s = calloc(2, sizeof(char));
+  size_t needed = snprintf(NULL, 0, "%x", i);
+  char* s = malloc(needed + 1);
   sprintf(s, "%x", i);
   return s;
 }
 
 char* get_octal(uint i) {
-  char* s = calloc(3, sizeof(char));
+  size_t needed = snprintf(NULL, 0, "%d", i);
+  char* s = malloc(needed + 1);
   sprintf(s, "%o", i);
   return s;
 }
