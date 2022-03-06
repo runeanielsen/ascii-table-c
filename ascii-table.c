@@ -3,15 +3,14 @@
 #include <string.h>
 
 void pad_left(char* s, uint l) {
-  char* padded = calloc(l, sizeof(char));
-
-  uint iterations = l - strlen(s) - 1;
-  for (uint i = 0; i < iterations; i++) {
-    padded[i] = ' ';
+  uint padding_count = l - strlen(s) - 1;
+  char* padding = calloc(padding_count, sizeof(char));
+  for (uint i = 0; i < padding_count; i++) {
+    padding[i] = ' ';
   }
-
-  strcat(padded, s);
-  strcpy(s, padded);
+  strcat(padding, s);
+  strcpy(s, padding);
+  free(padding);
 }
 
 char get_char(uint i) {
