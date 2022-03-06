@@ -1,6 +1,6 @@
 # ASCII Table
 
-Simple program to display an ASCII table, because why not?.
+Simple program to display an ASCII table, because why not???
 
 ## Compile and run.
 
