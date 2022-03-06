@@ -90,9 +90,13 @@ char* create_ascii_row(uint i) {
 
 int main() {
   for (uint i = 0; i < 4; i++) {
-    printf("Dec  Hex  Oct  C   ");
+    printf("Dec  Hex  Oct  C");
+    if (i < 3) {
+      printf(" | ");
+    } else {
+      printf("\n");
+    }
   }
-  printf("\n");
 
   for (uint i = 0; i <= 31; i++) {
     char* row = create_ascii_row(i);
