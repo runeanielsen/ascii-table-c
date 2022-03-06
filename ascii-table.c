@@ -12,7 +12,7 @@ void pad_left(char* s, size_t l) {
 
   char padding[l];
   padding[padding_count] = '\0';
-  for (uint i = 0; i < padding_count; i++) {
+  for (size_t i = 0; i < padding_count; i++) {
     padding[i] = ' ';
   }
 
@@ -26,7 +26,7 @@ void pad_left(char* s, size_t l) {
   strncpy(s, padding, l + 1);
 }
 
-char get_char(uint i) {
+char get_char(size_t i) {
   if (i <= 31) {
     return '-';
   } else if (i == 32 || i == 127) {
@@ -43,25 +43,25 @@ char* get_dec(size_t i) {
   return s;
 }
 
-char* get_hex(uint i) {
+char* get_hex(unsigned int i) {
   size_t needed = snprintf(NULL, 0, "%x", i);
   char* s = malloc(needed + 1);
   sprintf(s, "%x", i);
   return s;
 }
 
-char* get_octal(uint i) {
+char* get_octal(unsigned int i) {
   size_t needed = snprintf(NULL, 0, "%d", i);
   char* s = malloc(needed + 1);
   sprintf(s, "%o", i);
   return s;
 }
 
-char* create_ascii_row(uint i) {
+char* create_ascii_row(size_t i) {
   char* s = calloc(73, sizeof(char));
 
-  for (uint j = 0; j < 4; j++) {
-    uint tmp_i = i + (32 * j);
+  for (size_t j = 0; j < 4; j++) {
+    size_t tmp_i = i + (32 * j);
 
     char c = get_char(tmp_i);
     char* dec = get_dec(tmp_i);
@@ -89,7 +89,7 @@ char* create_ascii_row(uint i) {
 }
 
 int main() {
-  for (uint i = 0; i < 4; i++) {
+  for (size_t i = 0; i < 4; i++) {
     printf("Dec  Hex  Oct  C");
     if (i < 3) {
       printf(" | ");
@@ -98,7 +98,7 @@ int main() {
     }
   }
 
-  for (uint i = 0; i <= 31; i++) {
+  for (size_t i = 0; i <= 31; i++) {
     char* row = create_ascii_row(i);
     printf("%s\n", row);
     free(row);
