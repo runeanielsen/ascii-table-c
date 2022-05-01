@@ -27,11 +27,9 @@ void pad_left(char* s, size_t l) {
 }
 
 char get_char(size_t i) {
-  if (i < 33 || i == 127) {
-    return ' ';
-  } else {
-    return (char)i;
-  }
+  return i < 33 || i == 127
+    ? ' '
+    : (char)i;
 }
 
 char* get_dec(size_t i) {
