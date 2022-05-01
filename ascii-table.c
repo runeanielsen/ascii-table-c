@@ -70,7 +70,7 @@ char *create_ascii_row(size_t i) {
       sprintf(tmp_s, "%s  %s  %s  %c | ", dec, hex, oct, c);
     }
 
-    strcat(s, tmp_s);
+    strncat(s, tmp_s, 128);
 
     free(dec);
     dec = NULL;
@@ -84,12 +84,13 @@ char *create_ascii_row(size_t i) {
 }
 
 char *create_ascii_body() {
-  char *body = calloc(4096, sizeof(char));
+  size_t l = 4096;
+  char *body = calloc(l, sizeof(char));
 
   for (size_t i = 0; i < 32; i++) {
     char *row = create_ascii_row(i);
-    strcat(body, row);
-    strcat(body, "\n");
+    strncat(body, row, l);
+    strncat(body, "\n", l);
     free(row);
     row = NULL;
   }
@@ -98,28 +99,30 @@ char *create_ascii_body() {
 }
 
 char *create_ascii_header() {
-  char *header = calloc(128, sizeof(char));
+  size_t l = 128;
+  char *header = calloc(l, sizeof(char));
 
   for (size_t i = 0; i < 4; i++) {
-    strcat(header, "Dec  Hex  Oct  C");
+    strncat(header, "Dec  Hex  Oct  C", l);
     if (i < 3) {
-      strcat(header, " | ");
+      strncat(header, " | ", l);
     }
   }
 
-  strcat(header, "\n");
+  strncat(header, "\n", l);
 
   return header;
 }
 
 char *create_ascii_table() {
+  size_t l = 4096;
   char *table = calloc(4096, sizeof(char));
 
   char *ascii_header = create_ascii_header();
   char *ascii_body = create_ascii_body();
 
-  strcat(table, create_ascii_header());
-  strcat(table, create_ascii_body());
+  strncat(table, create_ascii_header(), l);
+  strncat(table, create_ascii_body(), l);
 
   free(ascii_header);
   ascii_header = NULL;
