@@ -73,8 +73,11 @@ char *create_ascii_row(size_t i) {
     strcat(s, tmp_s);
 
     free(dec);
+    dec = NULL;
     free(hex);
+    hex = NULL;
     free(oct);
+    oct = NULL;
   }
 
   return s;
