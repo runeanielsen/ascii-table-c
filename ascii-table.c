@@ -11,6 +11,7 @@ void pad_left(char* s, size_t l) {
   size_t padding_count = l - strlen(s) - 1;
 
   char padding[l];
+  memset(padding, 0, l);
   padding[padding_count] = '\0';
   for (size_t i = 0; i < padding_count; i++) {
     padding[i] = ' ';
@@ -36,47 +37,42 @@ void get_octal(unsigned int i, char* buffer, size_t max_length) {
   snprintf(buffer, max_length, "%o", i);
 }
 
-char* create_ascii_row(size_t i) {
-  size_t s_l = 128;
-  char* s = calloc(s_l, sizeof(char));
-
+void create_ascii_row(size_t i, char* buffer, size_t max_length) {
   for (size_t j = 0; j < 4; j++) {
     size_t tmp_i = i + (32 * j);
 
     char c = get_char(tmp_i);
-    char dec[5];
+    char dec[5] = "";
     get_dec(tmp_i, dec, sizeof(dec));
     pad_left(dec, 4);
-    char hex[5];
+    char hex[5] = "";
     get_hex(tmp_i, hex, sizeof(hex));
     pad_left(hex, 4);
-    char oct[5];
+    char oct[5] = "";
     get_octal(tmp_i, oct, sizeof(oct));
     pad_left(oct, 4);
 
-    char tmp_s[32];
+    char tmp_s[32] = "";
     if (j == 3) {
       snprintf(tmp_s, sizeof(tmp_s), "%s  %s  %s  %c", dec, hex, oct, c);
     } else {
       snprintf(tmp_s, sizeof(tmp_s), "%s  %s  %s  %c | ", dec, hex, oct, c);
     }
 
-    strncat(s, tmp_s, s_l);
+    strncat(buffer, tmp_s, max_length);
   }
-
-  return s;
 }
 
 char* create_ascii_body() {
   size_t l = 4096;
   char* body = calloc(l, sizeof(char));
 
+  char row[128] = "";
   for (size_t i = 0; i < 32; i++) {
-    char* row = create_ascii_row(i);
+    create_ascii_row(i, row, sizeof(row));
     strncat(body, row, l);
     strncat(body, "\n", l);
-    free(row);
-    row = NULL;
+    memset(row, 0, sizeof(row));
   }
 
   return body;
@@ -105,8 +101,8 @@ char* create_ascii_table() {
   char* ascii_header = create_ascii_header();
   char* ascii_body = create_ascii_body();
 
-  strncat(table, create_ascii_header(), l);
-  strncat(table, create_ascii_body(), l);
+  strncat(table, ascii_header, l);
+  strncat(table, ascii_body, l);
 
   free(ascii_header);
   ascii_header = NULL;
