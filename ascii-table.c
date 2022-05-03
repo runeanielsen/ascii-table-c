@@ -17,7 +17,7 @@ void pad_left(char* s, size_t l) {
     padding[i] = ' ';
   }
 
-  strncat(padding, s, l);
+  strncat(padding, s, l - 1);
   strncpy(s, padding, l);
 }
 
@@ -59,65 +59,44 @@ void create_ascii_row(size_t i, char* buffer, size_t max_length) {
       snprintf(tmp_s, sizeof(tmp_s), "%s  %s  %s  %c | ", dec, hex, oct, c);
     }
 
-    strncat(buffer, tmp_s, max_length);
+    strncat(buffer, tmp_s, max_length - 1);
   }
 }
 
-char* create_ascii_body() {
-  size_t l = 4096;
-  char* body = calloc(l, sizeof(char));
-
+void create_ascii_body(char* buffer, size_t max_size) {
   char row[128] = "";
   for (size_t i = 0; i < 32; i++) {
     create_ascii_row(i, row, sizeof(row));
-    strncat(body, row, l);
-    strncat(body, "\n", l);
+    strncat(buffer, row, max_size - 1);
+    strncat(buffer, "\n", max_size - 1);
     memset(row, 0, sizeof(row));
   }
-
-  return body;
 }
 
-char* create_ascii_header() {
-  size_t l = 128;
-  char* header = calloc(l, sizeof(char));
-
+void create_ascii_header(char* buffer, size_t max_size) {
   for (size_t i = 0; i < 4; i++) {
-    strncat(header, "Dec  Hex  Oct  C", l);
+    strncat(buffer, "Dec  Hex  Oct  C", max_size - 1);
     if (i < 3) {
-      strncat(header, " | ", l);
+      strncat(buffer, " | ", max_size - 1);
     }
   }
-
-  strncat(header, "\n", l);
-
-  return header;
+  strncat(buffer, "\n", max_size - 1);
 }
 
-char* create_ascii_table() {
-  size_t l = 4096;
-  char* table = calloc(4096, sizeof(char));
+void create_ascii_table(char* buffer, size_t max_size) {
+  char header[128] = "";
+  create_ascii_header(header, sizeof(header));
 
-  char* ascii_header = create_ascii_header();
-  char* ascii_body = create_ascii_body();
+  char body[4096] = "";
+  create_ascii_body(body, sizeof(body));
 
-  strncat(table, ascii_header, l);
-  strncat(table, ascii_body, l);
-
-  free(ascii_header);
-  ascii_header = NULL;
-  free(ascii_body);
-  ascii_body = NULL;
-
-  return table;
+  strncat(buffer, header, max_size - 1);
+  strncat(buffer, body, max_size - 1);
 }
 
 int main() {
-  char* ascii_table = create_ascii_table();
+  char ascii_table[5124];
+  create_ascii_table(ascii_table, sizeof(ascii_table));
   printf("%s", ascii_table);
-
-  free(ascii_table);
-  ascii_table = NULL;
-
   return EXIT_SUCCESS;
 }
