@@ -37,7 +37,8 @@ void get_octal(unsigned int i, char* buffer, size_t max_length) {
 }
 
 char* create_ascii_row(size_t i) {
-  char* s = calloc(128, sizeof(char));
+  size_t s_l = 128;
+  char* s = calloc(s_l, sizeof(char));
 
   for (size_t j = 0; j < 4; j++) {
     size_t tmp_i = i + (32 * j);
@@ -53,14 +54,14 @@ char* create_ascii_row(size_t i) {
     get_octal(tmp_i, oct, sizeof(oct));
     pad_left(oct, 4);
 
-    char tmp_s[16];
+    char tmp_s[32];
     if (j == 3) {
-      sprintf(tmp_s, "%s  %s  %s  %c", dec, hex, oct, c);
+      snprintf(tmp_s, sizeof(tmp_s), "%s  %s  %s  %c", dec, hex, oct, c);
     } else {
-      sprintf(tmp_s, "%s  %s  %s  %c | ", dec, hex, oct, c);
+      snprintf(tmp_s, sizeof(tmp_s), "%s  %s  %s  %c | ", dec, hex, oct, c);
     }
 
-    strncat(s, tmp_s, 128);
+    strncat(s, tmp_s, s_l);
   }
 
   return s;
