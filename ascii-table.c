@@ -16,39 +16,24 @@ void pad_left(char* s, size_t l) {
     padding[i] = ' ';
   }
 
-  s = realloc(s, l + 1);
-  if (!s) {
-    fprintf(stderr, "pad_left(): Out of memory.\n");
-    exit(EXIT_FAILURE);
-  }
-
-  strncat(padding, s, l + 1);
-  strncpy(s, padding, l + 1);
+  strncat(padding, s, l);
+  strncpy(s, padding, l);
 }
 
 char get_char(size_t i) {
   return i < 33 || i == 127 ? ' ' : (char)i;
 }
 
-char* get_dec(size_t i) {
-  size_t needed = snprintf(NULL, 0, "%zu", i);
-  char* s = malloc(needed + 1);
-  sprintf(s, "%zu", i);
-  return s;
+void get_dec(size_t i, char* buffer, size_t max_length) {
+  snprintf(buffer, max_length, "%zu", i);
 }
 
-char* get_hex(unsigned int i) {
-  size_t needed = snprintf(NULL, 0, "%x", i);
-  char* s = malloc(needed + 1);
-  sprintf(s, "%x", i);
-  return s;
+void get_hex(unsigned int i, char* buffer, size_t max_length) {
+  snprintf(buffer, max_length, "%x", i);
 }
 
-char* get_octal(unsigned int i) {
-  size_t needed = snprintf(NULL, 0, "%d", i);
-  char* s = malloc(needed + 1);
-  sprintf(s, "%o", i);
-  return s;
+void get_octal(unsigned int i, char* buffer, size_t max_length) {
+  snprintf(buffer, max_length, "%o", i);
 }
 
 char* create_ascii_row(size_t i) {
@@ -58,11 +43,14 @@ char* create_ascii_row(size_t i) {
     size_t tmp_i = i + (32 * j);
 
     char c = get_char(tmp_i);
-    char* dec = get_dec(tmp_i);
+    char dec[5];
+    get_dec(tmp_i, dec, sizeof(dec));
     pad_left(dec, 4);
-    char* hex = get_hex(tmp_i);
+    char hex[5];
+    get_hex(tmp_i, hex, sizeof(hex));
     pad_left(hex, 4);
-    char* oct = get_octal(tmp_i);
+    char oct[5];
+    get_octal(tmp_i, oct, sizeof(oct));
     pad_left(oct, 4);
 
     char tmp_s[16];
@@ -73,13 +61,6 @@ char* create_ascii_row(size_t i) {
     }
 
     strncat(s, tmp_s, 128);
-
-    free(dec);
-    dec = NULL;
-    free(hex);
-    hex = NULL;
-    free(oct);
-    oct = NULL;
   }
 
   return s;
