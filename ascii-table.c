@@ -84,18 +84,12 @@ void create_ascii_header(char* buffer, size_t max_size) {
 }
 
 void create_ascii_table(char* buffer, size_t max_size) {
-  char header[128] = "";
-  create_ascii_header(header, sizeof(header));
-
-  char body[4096] = "";
-  create_ascii_body(body, sizeof(body));
-
-  strncat(buffer, header, max_size - 1);
-  strncat(buffer, body, max_size - 1);
+  create_ascii_header(buffer, max_size);
+  create_ascii_body(buffer, max_size);
 }
 
 int main() {
-  char ascii_table[5124];
+  char ascii_table[4096];
   create_ascii_table(ascii_table, sizeof(ascii_table));
   printf("%s", ascii_table);
   return EXIT_SUCCESS;
