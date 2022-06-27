@@ -4,8 +4,16 @@ Just playing around with C :)
 
 ## Compile and run.
 
+Compile with GCC.
+
 ```sh
-gcc -O2 -Wall -o ascii-table ascii-table.c && ./ascii-table
+gcc -O2 -Wall -o ascii-table ascii-table.c
+```
+
+Run.
+
+```sh
+./ascii-table
 ```
 
 ## Output
