@@ -5,7 +5,7 @@ Just playing around with C :)
 ## Compile and run.
 
 ```sh
-gcc -Wall -o ascii-table ascii-table.c && ./ascii-table
+gcc -O2 -Wall -o ascii-table ascii-table.c && ./ascii-table
 ```
 
 ## Output
