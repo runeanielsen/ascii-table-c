@@ -38,6 +38,7 @@ void create_ascii_header(char* buffer, size_t max_size) {
       strncat(buffer, " | ", max_size - 1);
     }
   }
+
   strncat(buffer, "\n", max_size - 1);
 }
 
