@@ -2,61 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-void pad_left(char* s, size_t l) {
-  /* If there is no difference, do not pad. */
-  if (l == strlen(s)) {
-    return;
-  }
-
-  size_t padding_count = l - strlen(s) - 1;
-
-  char padding[l];
-  memset(padding, 0, l);
-  padding[padding_count] = '\0';
-  for (size_t i = 0; i < padding_count; i++) {
-    padding[i] = ' ';
-  }
-
-  strncat(padding, s, l - 1);
-  strncpy(s, padding, l);
-}
-
 char get_char(size_t i) {
-  return i < 33 || i == 127 ? ' ' : (char)i;
-}
-
-void get_dec(size_t i, char* buffer, size_t max_length) {
-  snprintf(buffer, max_length, "%zu", i);
-}
-
-void get_hex(unsigned int i, char* buffer, size_t max_length) {
-  snprintf(buffer, max_length, "%x", i);
-}
-
-void get_octal(unsigned int i, char* buffer, size_t max_length) {
-  snprintf(buffer, max_length, "%o", i);
+  return i < 33 || i == 127 ? ' ' : i;
 }
 
 void create_ascii_row(size_t i, char* buffer, size_t max_length) {
   for (size_t j = 0; j < 4; j++) {
-    size_t tmp_i = i + (32 * j);
-
-    char c = get_char(tmp_i);
-    char dec[5] = "";
-    get_dec(tmp_i, dec, sizeof(dec));
-    pad_left(dec, 4);
-    char hex[5] = "";
-    get_hex(tmp_i, hex, sizeof(hex));
-    pad_left(hex, 4);
-    char oct[5] = "";
-    get_octal(tmp_i, oct, sizeof(oct));
-    pad_left(oct, 4);
+    unsigned int cell = i + (32 * j);
 
     char tmp_s[32] = "";
     if (j == 3) {
-      snprintf(tmp_s, sizeof(tmp_s), "%s  %s  %s  %c", dec, hex, oct, c);
+      snprintf(tmp_s, sizeof(tmp_s), "%3u %4x %4o %2c", cell, cell, cell, get_char(cell));
     } else {
-      snprintf(tmp_s, sizeof(tmp_s), "%s  %s  %s  %c | ", dec, hex, oct, c);
+      snprintf(tmp_s, sizeof(tmp_s), "%3u %4x %4o %2c | ", cell, cell, cell, get_char(cell));
     }
 
     strncat(buffer, tmp_s, max_length - 1);
@@ -92,5 +50,6 @@ int main() {
   char ascii_table[4096];
   create_ascii_table(ascii_table, sizeof(ascii_table));
   printf("%s", ascii_table);
+
   return EXIT_SUCCESS;
 }
