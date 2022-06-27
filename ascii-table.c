@@ -2,20 +2,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-char get_char(size_t i) {
-  return i < 33 || i == 127 ? ' ' : i;
-}
+char get_char(size_t i) { return i < 33 || i == 127 ? ' ' : i; }
 
-void create_ascii_row(size_t i, char* buffer, size_t max_length) {
+void create_ascii_row(size_t i, char *buffer, size_t max_length) {
   for (size_t j = 0; j < 4; j++) {
     unsigned int bv = i + 32 * j;
-    char row_block[32] = "";
-    snprintf(row_block, sizeof(row_block), "%3u %4x %4o %2c | ", bv, bv, bv, get_char(bv));
-    strncat(buffer, row_block, max_length - 1);
+    char block[32] = "";
+    snprintf(block, sizeof(block), "%3u %4x %4o %2c", bv, bv, bv, get_char(bv));
+    strncat(buffer, block, max_length - 1);
+    if (j < 3) {
+      strncat(buffer, " | ", max_length - 1);
+    }
   }
 }
 
-void create_ascii_body(char* buffer, size_t max_size) {
+void create_ascii_body(char *buffer, size_t max_size) {
   char row[128] = "";
   for (size_t i = 0; i < 32; i++) {
     create_ascii_row(i, row, sizeof(row));
@@ -25,15 +26,17 @@ void create_ascii_body(char* buffer, size_t max_size) {
   }
 }
 
-void create_ascii_header(char* buffer, size_t max_size) {
+void create_ascii_header(char *buffer, size_t max_size) {
   for (size_t i = 0; i < 4; i++) {
     strncat(buffer, "Dec  Hex  Oct  C", max_size - 1);
-    strncat(buffer, " | ", max_size - 1);
+    if (i < 3) {
+      strncat(buffer, " | ", max_size - 1);
+    }
   }
   strncat(buffer, "\n", max_size - 1);
 }
 
-void create_ascii_table(char* buffer, size_t max_size) {
+void create_ascii_table(char *buffer, size_t max_size) {
   create_ascii_header(buffer, max_size);
   create_ascii_body(buffer, max_size);
 }
