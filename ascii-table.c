@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-char char_formatting(size_t i) { return i < 33 || i == 127 ? ' ' : i; }
+char char_format(size_t i) { return i < 33 || i == 127 ? ' ' : i; }
 
 void ascii_row(size_t i, char *buffer, size_t max_length) {
   for (size_t j = 0; j < 4; j++) {
-    unsigned int bv = i + 32 * j;
+    unsigned int b = i + 32 * j;
     char block[32] = "";
-    snprintf(block, sizeof(block), "%3u %4x %4o %2c", bv, bv, bv, char_formatting(bv));
+    snprintf(block, sizeof(block), "%3u %4x %4o %2c", b, b, b, char_format(b));
     strncat(buffer, block, max_length - 1);
     if (j < 3) {
       strncat(buffer, " | ", max_length - 1);
