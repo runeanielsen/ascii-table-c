@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-char char_format(size_t i) { return i < 33 || i == 127 ? ' ' : i; }
+static char char_format(size_t i) { return i < 33 || i == 127 ? ' ' : i; }
 
-void ascii_row(size_t i, char *buffer, size_t max_length) {
+static void ascii_row(size_t i, char *buffer, size_t max_length) {
   for (size_t j = 0; j < 4; j++) {
     unsigned int b = i + 32 * j;
     char block[32] = "";
@@ -16,7 +16,7 @@ void ascii_row(size_t i, char *buffer, size_t max_length) {
   }
 }
 
-void ascii_body(char *buffer, size_t max_size) {
+static void ascii_body(char *buffer, size_t max_size) {
   char row[128] = "";
   for (size_t i = 0; i < 32; i++) {
     ascii_row(i, row, sizeof(row));
@@ -26,7 +26,7 @@ void ascii_body(char *buffer, size_t max_size) {
   }
 }
 
-void ascii_header(char *buffer, size_t max_size) {
+static void ascii_header(char *buffer, size_t max_size) {
   for (size_t i = 0; i < 4; i++) {
     strncat(buffer, "Dec  Hex  Oct  C", max_size - 1);
     if (i < 3) {
@@ -37,13 +37,13 @@ void ascii_header(char *buffer, size_t max_size) {
   }
 }
 
-void ascii_table(char *buffer, size_t max_size) {
+static void ascii_table(char *buffer, size_t max_size) {
   ascii_header(buffer, max_size);
   ascii_body(buffer, max_size);
 }
 
 int main() {
-  char ascii_table_buf[4096];
+  char ascii_table_buf[4096] = "";
   ascii_table(ascii_table_buf, sizeof(ascii_table_buf));
   printf("%s", ascii_table_buf);
   return EXIT_SUCCESS;
