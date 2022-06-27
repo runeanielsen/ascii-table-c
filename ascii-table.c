@@ -31,14 +31,13 @@ static void ascii_header(char *buffer, size_t max_size) {
     strncat(buffer, "Dec  Hex  Oct  C", max_size - 1);
     if (i < 3) {
       strncat(buffer, " | ", max_size - 1);
-    } else {
-      strncat(buffer, "\n", max_size - 1);
     }
   }
 }
 
 static void ascii_table(char *buffer, size_t max_size) {
   ascii_header(buffer, max_size);
+  strncat(buffer, "\n", max_size - 1);
   ascii_body(buffer, max_size);
 }
 
