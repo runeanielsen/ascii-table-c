@@ -17,12 +17,11 @@ static void ascii_row(size_t i, char *buffer, size_t max_length) {
 }
 
 static void ascii_body(char *buffer, size_t max_size) {
-  char row[128] = "";
   for (size_t i = 0; i < 32; i++) {
+    char row[128] = "";
     ascii_row(i, row, sizeof(row));
     strncat(buffer, row, max_size - 1);
     strncat(buffer, "\n", max_size - 1);
-    memset(row, 0, sizeof(row));
   }
 }
 
