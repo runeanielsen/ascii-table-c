@@ -40,7 +40,7 @@ static void ascii_table(char *buffer, size_t max_size) {
   ascii_body(buffer, max_size);
 }
 
-int main() {
+int main(void) {
   char ascii_table_buf[4096] = "";
   ascii_table(ascii_table_buf, sizeof(ascii_table_buf));
   printf("%s", ascii_table_buf);
